@@ -1,0 +1,19 @@
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+
+development:
+  <<: *default
+  database: prueba2_aleks_development
+
+test:
+  <<: *default
+  database: prueba2_aleks_test
+
+production:
+  <<: *default
+  database: prueba2_aleks_production
+  username: repaso_examen2
+  password: <%= ENV['REPASO_EXAMEN2_DATABASE_PASSWORD'] %>
