@@ -11,19 +11,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160708005356) do
+ActiveRecord::Schema.define(version: 20160708022811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "inventories", force: :cascade do |t|
-    t.integer  "serial",      null: false
+    t.integer  "serial",       null: false
     t.string   "description"
     t.integer  "size"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "operation_id"
   end
 
+  add_index "inventories", ["operation_id"], name: "index_inventories_on_operation_id", using: :btree
   add_index "inventories", ["serial"], name: "index_inventories_on_serial", using: :btree
 
+  create_table "operations", force: :cascade do |t|
+    t.integer  "worker_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "operations", ["worker_id"], name: "index_operations_on_worker_id", using: :btree
+
+  create_table "workers", force: :cascade do |t|
+    t.string   "name"
+    t.string   "mail"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "inventories", "operations"
+  add_foreign_key "operations", "workers"
 end
